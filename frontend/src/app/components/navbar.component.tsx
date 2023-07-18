@@ -11,7 +11,7 @@ export default function Navbar() {
         { name: 'Epicerie sucrée' },
         { name: 'Produits frais' },
         { name: 'Boisson' },
-        { name: 'test' }
+        { name: 'Animalerie' }
     ];
 
     let items = [
@@ -28,7 +28,7 @@ export default function Navbar() {
             ),
         },
         {
-            label: 'Accueil',
+            label: 'Home',
             icon: 'pi pi-fw pi-home',
         },
         {
