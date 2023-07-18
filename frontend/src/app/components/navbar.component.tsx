@@ -5,7 +5,7 @@ import { Dropdown } from 'primereact/dropdown';
 import Image from 'next/image';
 
 export default function Navbar() {
-    const [selectedCity, setSelectedCity] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const categories = [
         { name: 'Epicerie salée' },
         { name: 'Epicerie sucrée' },
@@ -18,8 +18,8 @@ export default function Navbar() {
         {
             template: () => (
                 <Dropdown
-                    value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.value)}
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.value)}
                     options={categories}
                     optionLabel="name"
                     placeholder="All categories"
