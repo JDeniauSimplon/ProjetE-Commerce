@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function Navbar() {
     const [selectedCity, setSelectedCity] = useState(null);
-    const cities = [
+    const categories = [
         { name: 'Epicerie salée' },
         { name: 'Epicerie sucrée' },
         { name: 'Produits frais' },
@@ -20,7 +20,7 @@ export default function Navbar() {
                 <Dropdown
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.value)}
-                    options={cities}
+                    options={categories}
                     optionLabel="name"
                     placeholder="All categories"
                     className="w-full md:w-14rem"
