@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,6 +28,21 @@ class Order
 
     #[ORM\Column(length: 50)]
     private ?string $reference = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Promo $coupons = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'reservation')]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +93,57 @@ class Order
     public function setReference(string $reference): static
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCoupons(): ?Promo
+    {
+        return $this->coupons;
+    }
+
+    public function setCoupons(?Promo $coupons): static
+    {
+        $this->coupons = $coupons;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            $product->removeReservation($this);
+        }
 
         return $this;
     }

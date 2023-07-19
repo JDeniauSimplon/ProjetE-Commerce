@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,18 @@ class Product
 
     #[ORM\Column(length: 50)]
     private ?string $price = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?category $category = null;
+
+    #[ORM\ManyToMany(targetEntity: Order::class, inversedBy: 'products')]
+    private Collection $reservation;
+
+    public function __construct()
+    {
+        $this->reservation = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +119,42 @@ class Product
     public function setPrice(string $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCategory(): ?category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getReservation(): Collection
+    {
+        return $this->reservation;
+    }
+
+    public function addReservation(Order $reservation): static
+    {
+        if (!$this->reservation->contains($reservation)) {
+            $this->reservation->add($reservation);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Order $reservation): static
+    {
+        $this->reservation->removeElement($reservation);
 
         return $this;
     }
