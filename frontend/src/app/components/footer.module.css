@@ -8,6 +8,7 @@
     padding: 30px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .footer .description {
@@ -60,7 +61,7 @@
     align-items: center;
     padding-top: 15px;
 }
-  
+
 .footer .newsletter .emailInput {
     flex-grow: 1;
     padding: 10px;
@@ -85,11 +86,58 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .footer .social_medias img {
     margin-left: 20px;
     cursor: pointer;
 }
-  
+
+@media screen and (max-width: 640px) {
+.footer .container {
+    align-items: center;
+    justify-content: center;
+}
+
+.footer .container .description {
+    margin-left: 0; 
+    max-width: 100%; 
+    padding-bottom: 30px;
+    text-align: center;
+}
+
+.footer .container .company {
+    margin-left: 0; 
+    max-width: 100%; 
+    padding-bottom: 30px;
+    padding-right: 100px;
+}
+
+.footer .container .ressources {
+    max-width: 100%; 
+    margin-left: 0; 
+    padding-bottom: 30px;
+}
+
+.footer .container .newsletter {
+    margin-left: 0; 
+    padding-bottom: 30px;
+}
+
+.footer .newsletter .form {
+    flex-direction: column; 
+    align-items: stretch; 
+}
+
+.footer .newsletter .emailInput {
+    margin-right: 0; 
+    margin-bottom: 10px; 
+}
+
+.footer .social_medias {
+    margin-bottom: 10px; 
+}
+}
+
 
