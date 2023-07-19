@@ -42,7 +42,7 @@ export default function Navbar() {
     ];
 
     const start = (
-        <Image src="/images/logo.png" alt="Logo" width={100} height={80} className="mr-2" />
+        <Image src={"/logo.jpg"} alt="Logo" width={100} height={100} className="mr-2" />
     );
 
     return (
