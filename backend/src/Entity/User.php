@@ -30,6 +30,9 @@ class User
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class, orphanRemoval: true)]
     private Collection $orders;
 
+    #[ORM\Column(length: 50)]
+    private ?string $first_name = null;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -102,6 +105,18 @@ class User
                 $order->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    public function setFirstName(string $first_name): static
+    {
+        $this->first_name = $first_name;
 
         return $this;
     }
