@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState, useEffect } from 'react';
 import styles from './content.component.module.css'
 import Image from 'next/image';
@@ -41,7 +40,6 @@ export default function Content() {
 
     const colors = ['#F6784C', '#C4D600', '#EAAA00', '#ED8B00', '#84BD00'];
 
-
     return (
         <>
             {/* <Image src="/images/chips.jpg" alt="Description de l'image" width={300} height={300} /> */}
@@ -50,27 +48,41 @@ export default function Content() {
                     <div className={styles.categories}>
 
                         {data.categories?.map((category, index) => (
-                            <div key={index} style={{ backgroundColor: colors[index % colors.length] }}>
+                            <label
+                                key={index}
+                                className={`${styles.categoryButton} ${checkedCategories[category.id] ? styles.checked : ''}`}
+                                style={{
+                                    backgroundColor: checkedCategories[category.id] ? `${colors[index % colors.length]}CC` : colors[index % colors.length],
+                                }}
+                                htmlFor={category.id.toString()}
+                            >
                                 <input
                                     type="checkbox"
+                                    id={category.id.toString()}
                                     checked={checkedCategories[category.id] || false}
                                     onChange={(e) => handleCheckChange(category.id, e.target.checked)}
+                                    style={{ display: 'none' }} // Masquer la checkbox
                                 />
-                                <label htmlFor={category.id.toString()}>{category.name}</label>
-                            </div>
+                                {category.name}
+                            </label>
                         ))}
                     </div>
 
 
                     {data.products?.map((product: Product, index: number) => (
-                        (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category_id]) &&
-                        <div key={index}>
+                        <div
+                            key={index}
+                            className={`${styles.product} ${(!Object.values(checkedCategories).includes(true) || checkedCategories[product.category_id]) ? '' : styles.hidden}`}
+                        >
                             <h1>{product.name}</h1>
                             <p>{product.description}</p>
                         </div>
                     ))}
                 </div>
             </>
+
+
+
         </>
     );
 }

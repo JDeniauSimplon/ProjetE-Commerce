@@ -1,3 +1,35 @@
 .categories {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    width: 100%;
+}
+
+.categoryButton {
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 5px;
+    width: 175px;
+    margin: 5px;
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    transition: background-color 0.3s ease, border 0.2s ease;
+}
+
+.categoryButton.checked {
+    border: 3px solid black;
+}
+
+.product {
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease;
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.product.hidden {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
 }
