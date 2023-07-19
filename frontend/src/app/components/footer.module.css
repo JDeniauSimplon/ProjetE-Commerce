@@ -139,4 +139,36 @@
 }
 }
 
+@media screen and (max-width: 410px) {
+    .footer .container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .footer .container .description,
+    .footer .container .company,
+    .footer .container .ressources,
+    .footer .container .newsletter {
+        max-width: 100%; 
+        text-align: center; 
+        margin-left: 0; 
+        padding-right: 0;
+    }
+
+    .footer .newsletter .form {
+        flex-direction: column; 
+        align-items: stretch; 
+    }
+
+    .footer .newsletter .emailInput {
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+
+    .footer .social_medias {
+        margin-top: 0;
+    }
+}
+
 
