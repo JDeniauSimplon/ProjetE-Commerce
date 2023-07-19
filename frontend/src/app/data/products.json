@@ -1,0 +1,126 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Epicerie salée"
+        },
+        {
+            "id": 2,
+            "name": "Epicerie sucrée"
+        },
+        {
+            "id": 3,
+            "name": "Produits frais"
+        },
+        {
+            "id": 4,
+            "name": "Boisson"
+        },
+        {
+            "id": 5,
+            "name": "Animalerie"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "description": "Chips de pommes de terre",
+            "name": "Chips",
+            "createdAt": "2023-07-19",
+            "image": "chips.jpg",
+            "stock": 50,
+            "price": 2.99,
+            "category_id": 1
+        },
+        {
+            "id": 2,
+            "description": "Confiture de fraises",
+            "name": "Confiture",
+            "createdAt": "2023-07-18",
+            "image": "confiture.jpg",
+            "stock": 20,
+            "price": 3.49,
+            "category_id": 2
+        },
+        {
+            "id": 3,
+            "description": "Yaourt nature",
+            "name": "Yaourt",
+            "createdAt": "2023-07-17",
+            "image": "yaourt.jpg",
+            "stock": 30,
+            "price": 1.99,
+            "category_id": 3
+        },
+        {
+            "id": 4,
+            "description": "Jus d'orange",
+            "name": "Jus",
+            "createdAt": "2023-07-16",
+            "image": "jus.jpg",
+            "stock": 40,
+            "price": 2.49,
+            "category_id": 4
+        },
+        {
+            "id": 5,
+            "description": "Croquettes pour chats",
+            "name": "Croquettes",
+            "createdAt": "2023-07-15",
+            "image": "croquettes.jpg",
+            "stock": 15,
+            "price": 9.99,
+            "category_id": 5
+        },
+        {
+            "id": 6,
+            "description": "Pâtes alimentaires",
+            "name": "Pâtes",
+            "createdAt": "2023-07-14",
+            "image": "pates.jpg",
+            "stock": 60,
+            "price": 1.79,
+            "category_id": 1
+        },
+        {
+            "id": 7,
+            "description": "Barres de chocolat",
+            "name": "Barres de chocolat",
+            "createdAt": "2023-07-13",
+            "image": "chocolat.jpg",
+            "stock": 25,
+            "price": 0.99,
+            "category_id": 2
+        },
+        {
+            "id": 8,
+            "description": "Lait frais",
+            "name": "Lait",
+            "createdAt": "2023-07-12",
+            "image": "lait.jpg",
+            "stock": 35,
+            "price": 1.29,
+            "category_id": 3
+        },
+        {
+            "id": 9,
+            "description": "Eau minérale",
+            "name": "Eau",
+            "createdAt": "2023-07-11",
+            "image": "eau.jpg",
+            "stock": 45,
+            "price": 0.99,
+            "category_id": 4
+        },
+        {
+            "id": 10,
+            "description": "Litière pour chats",
+            "name": "Litière",
+            "createdAt": "2023-07-10",
+            "image": "litiere.jpg",
+            "stock": 10,
+            "price": 5.99,
+            "category_id": 5
+        }
+    ]
+}
