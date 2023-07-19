@@ -1,0 +1,95 @@
+.footer {
+    width: 100%;
+    background-color: white;
+}
+
+.footer .container {
+    margin-top: 20px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer .description {
+    max-width: 300px;
+}
+
+.footer .container .description .p {
+  padding-top: 10px;
+  color: #504A4A;
+}
+
+.footer .container .company {
+    margin-left: 100px;
+}
+
+.footer .container .company .h2 {
+    color: #253D4E;
+}
+
+.footer .company .p {
+    padding-top: 20px;
+    color: #504A4A;
+}
+
+.footer .container .ressources {
+    margin-left: 100px;
+}
+
+.footer .container .ressources .h2 {
+    color: #253D4E;
+}
+
+.footer .ressources .p {
+    padding-top: 20px;
+    color: #504A4A;
+}
+
+.footer .newsletter {
+    margin-left: 100px;
+    max-width: 500px;
+}
+
+.footer .newsletter .p {
+    color: #504A4A;
+}
+
+.footer .newsletter .form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+}
+  
+.footer .newsletter .emailInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    border-radius: 3px;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+.footer .newsletter .submitButton {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.footer .social_medias {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.footer .social_medias img {
+    margin-left: 20px;
+    cursor: pointer;
+}
+  
+

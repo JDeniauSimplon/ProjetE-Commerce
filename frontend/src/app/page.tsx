@@ -3,11 +3,13 @@ import styles from './page.module.css'
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.min.css';
 import Navbar from './components/navbar.component';
+import Footer from './components/footer';
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <Footer />
     </>
   )
 }
