@@ -36,6 +36,11 @@ class Promo
         $this->orders = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->campaign;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
