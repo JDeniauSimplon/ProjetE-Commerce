@@ -43,6 +43,11 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Commandes', 'fas fa-shopping-cart', Order::class),
             MenuItem::linkToCrud('Produits', 'fas fa-cube', Product::class),
             MenuItem::linkToCrud('Promos', 'fas fa-tag', Promo::class),
-        ]);
+        ])
+        ;
+        yield MenuItem::section('Réseaux sociaux');
+        yield MenuItem::linkToUrl('Facebook', 'fab fa-facebook', 'https://www.facebook.com/votre-page')->setLinkTarget('_blank');
+        yield MenuItem::linkToUrl('Twitter', 'fab fa-twitter', 'https://twitter.com/votre-compte')->setLinkTarget('_blank');
+        yield MenuItem::linkToUrl('Instagram', 'fab fa-instagram', 'https://www.instagram.com/votre-compte')->setLinkTarget('_blank');
     }
 }

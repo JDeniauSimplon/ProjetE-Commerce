@@ -15,6 +15,7 @@ use ApiPlatform\Metadata\Post;
 
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
         new GetCollection(
@@ -68,6 +69,12 @@ class Product
 
     #[ORM\ManyToMany(targetEntity: Order::class, inversedBy: 'products')]
     private Collection $reservation;
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->created_at = new \DateTime();
+    }
 
     public function __construct()
     {

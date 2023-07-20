@@ -44,7 +44,7 @@ class ProductCrudController extends AbstractCrudController
             IntegerField::new('stock', 'Stock'),
             MoneyField::new('price', 'Prix')->setCurrency('EUR')->setStoredAsCents(false),
             TextField::new('description', 'Description')->hideOnIndex(),
-            DateTimeField::new('createdAt', 'Date de création'),
+            DateTimeField::new('createdAt', 'Date de création')->hideOnForm(),
         ];
     }
 }

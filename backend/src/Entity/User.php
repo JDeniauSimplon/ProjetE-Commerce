@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource]
 class User
 {
@@ -32,6 +33,12 @@ class User
 
     #[ORM\Column(length: 50)]
     private ?string $first_name = null;
+
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        $this->created_at = new \DateTime();
+    }
 
     public function __construct()
     {
