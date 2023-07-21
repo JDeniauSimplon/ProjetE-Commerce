@@ -1,0 +1,126 @@
+.header {
+    background-color: white;
+    position: sticky;
+    top: 0;
+}
+
+.header .nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.header .nav .right {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.header .nav .right .form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.header .nav .right .form .searchInput {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    border-radius: 3px;
+    background-position: right 10px center;
+    background-size: 20px;
+    background-color: #F3F3F3;
+}
+
+.header .nav .right .form .submitButton {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    margin-left: -15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.header .nav .right .a {
+    padding: 30px;
+    margin-top: 10px;
+    color: #253D4E;
+}
+
+.header .nav .right .a:hover {
+    color: #509E2F;
+}
+
+.header .nav .menuButton {
+    display: none;
+}
+
+.header .nav .right .closeButton {
+    display: none;
+}
+
+.header .nav .right.open {
+    transform: translateY(0);
+}
+
+
+/* Media queries pour les écrans mobiles */
+@media (max-width: 768px) {
+    .header .nav .menuButton {
+        display: block;
+        font-size: 30px;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+    }
+
+    .header .nav .right .closeButton {
+        display: block;
+        padding-bottom: 15px;
+        font-size: 30px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: #253D4E;
+    }
+  
+    .header .nav .right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        transform: translateY(-100%);
+        background-color: white;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow: auto;
+    }
+
+    .header .nav .right .form {
+        align-items: stretch; 
+        margin-right: 0;
+    }
+
+    .header .nav .right .form .searchInput {
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+
+    .header .nav .right .form .submitButton {
+        margin-left: 0;
+        padding: 11px;
+        height: 100%;
+    }
+
+    .header .nav .right .a {
+        margin-top: 0;
+    }
+
+}

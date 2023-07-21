@@ -1,55 +1,43 @@
 "use client"
-import { useState } from 'react';
-import { Menubar } from 'primereact/menubar';
-import { Dropdown } from 'primereact/dropdown';
+
 import Image from 'next/image';
+import styles from './navbar.module.css'
+import { useState } from 'react';
+import { FaSearch } from "react-icons/fa";
+
 
 export default function Navbar() {
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const categories = [
-        { name: 'Epicerie salée' },
-        { name: 'Epicerie sucrée' },
-        { name: 'Produits frais' },
-        { name: 'Boisson' },
-        { name: 'Animalerie' }
-    ];
+    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-    let items = [
-        {
-            template: () => (
-                <Dropdown
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.value)}
-                    options={categories}
-                    optionLabel="name"
-                    placeholder="All categories"
-                    className="w-full md:w-14rem"
-                />
-            ),
-        },
-        {
-            label: 'Home',
-            icon: 'pi pi-fw pi-home',
-        },
-        {
-            label: 'Explore',
-            icon: 'pi pi-fw pi-search',
-        },
-        {
-            label: 'Help',
-            icon: 'pi pi-fw pi-question',
-        },
-    ];
-
-    const start = (
-        <Image src={"/logo.jpg"} alt="Logo" width={100} height={100} className="mr-2" />
-    );
+    const toggleMobileMenu = () => {
+      setMobileMenuOpen(!isMobileMenuOpen);
+    };
 
     return (
-        <Menubar
-            className="w-full flex justify-between h-5rem"
-            model={items}
-            start={start}
-        />
+        <div className={styles.header}>
+            <nav className={styles.nav}>
+              <Image src={"/logo.jpg"} alt="Logo" width={100} height={100} />
+              <button className={styles.menuButton} onClick={toggleMobileMenu}>
+                ☰
+              </button>
+              <div className={`${styles.right} ${isMobileMenuOpen ? styles.open : ''}`}>
+                <button className={styles.closeButton} onClick={toggleMobileMenu}>X</button>
+                <form className={styles.form}>
+                 <input
+                 type="text"
+                 className={styles.searchInput}
+                 placeholder="Rechercher un produit..."
+                 maxLength={100}
+                 required
+                 />
+                 <button type="submit" className={styles.submitButton}><FaSearch /></button>
+               </form>
+
+                <a className={styles.a} href="#">Home</a>
+                <a className={styles.a} href="#">Explore</a>
+                <a className={styles.a} href="#">Help</a>
+              </div>
+            </nav>
+        </div>
     );
 }
