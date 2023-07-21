@@ -11,21 +11,42 @@
 }
 
 .header .nav .right {
-    padding: 30px;
+    display: flex;
     transition: transform 0.3s ease-in-out;
 }
 
-.header .nav .right .dropdown {
-    background-color: #F3F3F3; 
-    border-radius: 5px; 
-    color: #253D4E; 
-    font-size: 16px; 
+.header .nav .right .form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-right: 30px;
+}
+
+.header .nav .right .form .searchInput {
+    flex-grow: 1;
     padding: 10px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    border-radius: 3px;
+    background-position: right 10px center;
+    background-size: 20px;
+    background-color: #F3F3F3;
+}
+
+.header .nav .right .form .submitButton {
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    margin-left: -15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
 }
 
 .header .nav .right .a {
     padding: 30px;
+    margin-top: 10px;
     color: #253D4E;
 }
 
@@ -42,7 +63,7 @@
 }
 
 .header .nav .right.open {
-    transform: translateX(0);
+    transform: translateY(0);
 }
 
 
@@ -58,9 +79,7 @@
 
     .header .nav .right .closeButton {
         display: block;
-        position: absolute;
-        top: 35px;
-        right: 20px;
+        padding-bottom: 15px;
         font-size: 30px;
         cursor: pointer;
         background: none;
@@ -76,10 +95,32 @@
         position: absolute;
         top: 0;
         right: 0;
-        transform: translateX(100%);
+        width: 100%;
+        transform: translateY(-100%);
         background-color: white;
         padding: 30px;
         box-sizing: border-box;
         overflow: auto;
     }
+
+    .header .nav .right .form {
+        align-items: stretch; 
+        margin-right: 0;
+    }
+
+    .header .nav .right .form .searchInput {
+        margin-right: 0; 
+        margin-bottom: 10px; 
+    }
+
+    .header .nav .right .form .submitButton {
+        margin-left: 0;
+        padding: 11px;
+        height: 100%;
+    }
+
+    .header .nav .right .a {
+        margin-top: 0;
+    }
+
 }

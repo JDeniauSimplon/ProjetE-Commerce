@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import styles from './navbar.module.css'
 import { useState } from 'react';
+import { FaSearch } from "react-icons/fa";
 
 
 export default function Navbar() {
@@ -21,14 +22,17 @@ export default function Navbar() {
               </button>
               <div className={`${styles.right} ${isMobileMenuOpen ? styles.open : ''}`}>
                 <button className={styles.closeButton} onClick={toggleMobileMenu}>X</button>
-                <select className={styles.dropdown}>
-                  <option value="all" className={styles.option}>Toutes les catégories</option>
-                  <option value="salty" className={styles.option}>Epicerie salée</option>
-                  <option value="sweet" className={styles.option}>Epicerie sucrée</option>
-                  <option value="fresh" className={styles.option}>Produits frais</option>
-                  <option value="drinks" className={styles.option}>Boissons</option>
-                  <option value="animal" className={styles.option}>Animalerie</option>
-                </select>
+                <form className={styles.form}>
+                 <input
+                 type="text"
+                 className={styles.searchInput}
+                 placeholder="Rechercher un produit..."
+                 maxLength={100}
+                 required
+                 />
+                 <button type="submit" className={styles.submitButton}><FaSearch /></button>
+               </form>
+
                 <a className={styles.a} href="#">Home</a>
                 <a className={styles.a} href="#">Explore</a>
                 <a className={styles.a} href="#">Help</a>
