@@ -1,12 +1,24 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import styles from './content.component.module.css'
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Image from 'next/image';
 
 interface Product {
+    id: number;
     categoryid: number;
     name: string;
     description: string;
+    images: string;
+    category: Category;
+    price: number;
+}
+
+interface Category {
+    id: number;
+    name: string;
+    description: string;
+    images: string;
 }
 
 export default function Content() {
@@ -20,7 +32,7 @@ export default function Content() {
         fetchCategories();
         fetchProducts()
         let initialChecks: { [key: number]: boolean } = {};
-        categories.forEach((category, index) => {
+        categories.forEach((category: Category, index) => {
             initialChecks[category.id] = false;
         });
         setCheckedCategories(initialChecks);
@@ -62,45 +74,60 @@ export default function Content() {
     console.log(products)
 
     return (
-        <>
-            {/* <Image src="/images/chips.jpg" alt="Description de l'image" width={300} height={300} /> */}
-            <>
-                <div>
-                    <div className={styles.categories}>
+        <div>
+            <div className={styles.categories}>
 
-                        {categories?.map((category, index) => (
-                            <label
-                                key={index}
-                                className={`${styles.categoryButton} ${checkedCategories[category.id] ? styles.checked : ''}`}
-                                style={{
-                                    backgroundColor: checkedCategories[category.id] ? `${colors[index % colors.length]}CC` : colors[index % colors.length],
-                                }}
-                                htmlFor={category.id.toString()}
-                            >
-                                <input
-                                    type="checkbox"
-                                    id={category.id.toString()}
-                                    checked={checkedCategories[category.id] || false}
-                                    onChange={(e) => handleCheckChange(category.id, e.target.checked)}
-                                    style={{ display: 'none' }} // Masquer la checkbox
-                                />
-                                {category.name}
-                            </label>
-                        ))}
-                    </div>
+                {categories?.map((category: Category, index) => (
+                    <label
+                        key={index}
+                        className={`${styles.categoryButton} ${checkedCategories[category.id] ? styles.checked : ''}`}
+                        style={{
+                            backgroundColor: checkedCategories[category.id] ? `${colors[index % colors.length]}CC` : colors[index % colors.length],
+                        }}
+                        htmlFor={category.id.toString()}
+                    >
+                        <input
+                            type="checkbox"
+                            id={category.id.toString()}
+                            checked={checkedCategories[category.id] || false}
+                            onChange={(e) => handleCheckChange(category.id, e.target.checked)}
+                            style={{ display: 'none' }}
+                        />
+                        {category.name}
+                    </label>
+                ))}
+            </div>
 
 
-                    {products?.map((product: Product, index: number) => (
-                        <div
-                            key={index}
-                            className={`${styles.product} ${(!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ? '' : styles.hidden}`}
-                        >
-                            <h1>{product.name}</h1>
-                            <p>{product.description}</p>
-                        </div>
-                    ))}
-                </div>
-            </>
-        </>
+            <div className={styles.productContainer}>
+                <TransitionGroup component={null}>
+                    {products.map((product: Product) =>
+                        (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
+                            (
+                                <CSSTransition
+                                    key={product.id}
+                                    timeout={300}
+                                    classNames="product"
+                                >
+
+                                    <div
+                                        className={`${styles.product}`}
+                                    >
+                                        <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
+                                        <div className={styles.productInfo}>
+                                            <h1>{product.name}</h1>
+                                            <p>{product.description}</p>
+                                            <div className={styles.productDetails}>
+                                                <p>{product.price} €</p>
+                                                <button className={styles.addToCartButton}>Ajouter au panier</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CSSTransition>
+                            ) : null
+                    )}
+                </TransitionGroup>
+            </div>
+        </div>
     );
 }
