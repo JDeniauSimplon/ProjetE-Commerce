@@ -13,7 +13,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 
-
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
@@ -23,10 +22,7 @@ use ApiPlatform\Metadata\Post;
         ),
         new Get(
             normalizationContext: ['groups' => ['product_read']]
-        ),
-        new Post(
-            denormalizationContext: ['groups' => ['product_write']]
-        ),
+        )
     ]
 )]
 
@@ -35,34 +31,32 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['products_read'])]
     private ?int $id = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\Column(length: 150)]
     private ?string $description = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[Groups(['products_read'])]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\Column(length: 50)]
     private ?string $images = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\Column]
     private ?int $stock = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\Column(length: 50)]
     private ?string $price = null;
 
-    #[Groups(['products_read'])]
+    #[Groups(['products_read','product_read' ])]
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;

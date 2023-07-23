@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\ApiResource;
 
+
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ApiResource(
     operations: [

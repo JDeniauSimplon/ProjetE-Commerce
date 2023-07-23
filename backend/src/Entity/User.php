@@ -8,10 +8,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(
+            normalizationContext: ['groups' => ['user_read']]
+        )
+    ]
+)]
 class User
 {
     #[ORM\Id]
@@ -20,19 +28,23 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user_read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user_read' , 'orders_read'])]
+    private ?string $first_name = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups(['user_read'])]
     private ?string $last_name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class, orphanRemoval: true)]
+    #[Groups(['user_read'])]
     private Collection $orders;
-
-    #[ORM\Column(length: 50)]
-    private ?string $first_name = null;
 
     #[ORM\PrePersist]
     public function prePersist(): void
@@ -48,8 +60,8 @@ class User
     public function __toString(): string
 {
     return $this->first_name . ' ' . $this->last_name;
+    return $this->getOrders();
 }
-
     
     public function getId(): ?int
     {
