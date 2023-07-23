@@ -25,6 +25,7 @@ class User
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
