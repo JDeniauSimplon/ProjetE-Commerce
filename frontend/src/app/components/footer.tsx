@@ -9,7 +9,7 @@ export default function Footer() {
       <div className={styles.footer}>
          <div className={styles.container}>
             <div className={styles.description}>
-               <Image src={"/logo.jpg"} width={70} height={70} alt='miniature'></Image>
+               <Image src={"/logo.jpg"} width={175} height={70} alt='miniature'></Image>
                <p className={styles.p}>Nous proposons une sélection gourmande et variée de produits sucrés, salés, frais, produits animaliers et des boissons pour émoustiller vos papilles. Qu'il s'agisse d'un dîner intime ou d'un festin pour la famille, Le Gourmet met un univers de saveurs à portée de clic. Faites vos courses facilement et en toute convivialité !</p>
             </div>
 

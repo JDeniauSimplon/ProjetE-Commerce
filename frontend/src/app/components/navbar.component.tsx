@@ -27,7 +27,7 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
   return (
     <div className={styles.header}>
       <nav className={styles.nav}>
-        <Image src={"/logo.jpg"} alt="Logo" width={100} height={100} />
+        <Image src={"/logo.jpg"} alt="Logo" width={250} height={100} />
         <button className={styles.menuButton} onClick={toggleMobileMenu}>
           ☰
         </button>
