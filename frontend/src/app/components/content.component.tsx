@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './content.component.module.css'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Image from 'next/image';
 
 
 interface Product {
@@ -22,7 +21,11 @@ interface Category {
     images: string;
 }
 
-export default function Content() {
+interface ContentProps {
+    search: string;
+}
+
+export default function Content({ search }: ContentProps) {
 
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -69,6 +72,8 @@ export default function Content() {
         }
     };
 
+    const filteredProducts = products.filter((product: Product) => product.name.toLowerCase().includes(search.toLowerCase()));
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -113,7 +118,7 @@ export default function Content() {
 
             <div className={styles.productContainer}>
                 <TransitionGroup component={null}>
-                    {products.map((product: Product) =>
+                    {filteredProducts.map((product: Product) =>
                         (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
                             (
                                 <CSSTransition
