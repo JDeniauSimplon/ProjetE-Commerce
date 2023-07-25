@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
 
 interface NavbarProps {
-  onSearchChange: (search: string) => void;
+  onSearchChange?: (search: string) => void;
 }
 
 
@@ -15,7 +15,9 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    onSearchChange(inputValue);
+    if (onSearchChange) {
+      onSearchChange(inputValue);
+    }
   }, [inputValue]);
 
   const toggleMobileMenu = () => {
@@ -32,22 +34,26 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
         <div className={`${styles.right} ${isMobileMenuOpen ? styles.open : ''}`}>
           <button className={styles.closeButton} onClick={toggleMobileMenu}>X</button>
           <form className={styles.form}>
-            <input
-              value={inputValue}
-              onChange={e => setInputValue(e.target.value)}
-              type="text"
-              className={styles.searchInput}
-              placeholder="Rechercher un produit..."
-              maxLength={100}
-              required
-            />
-            <button type="submit" className={styles.submitButton}><FaSearch /></button>
+            {onSearchChange && (
+              <>
+                <input
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                  type="text"
+                  className={styles.searchInput}
+                  placeholder="Rechercher un produit..."
+                  maxLength={100}
+                  required
+                />
+                <button type="submit" className={styles.submitButton}><FaSearch /></button>
+              </>
+            )}
           </form>
 
           <a className={styles.a} href="/">Home</a>
           <a className={styles.a} href="#">Explore</a>
           <a className={styles.a} href="#">Help</a>
-                <a className={styles.a} href="/cart">Mon panier</a>
+          <a className={styles.a} href="/cart">Mon panier</a>
         </div>
       </nav>
     </div>
