@@ -4,6 +4,7 @@ import styles from './content.component.module.css'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Image from 'next/image';
 
+
 interface Product {
     id: number;
     categoryid: number;
@@ -27,6 +28,8 @@ export default function Content() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [checkedCategories, setCheckedCategories] = useState<{ [key: number]: boolean }>({});
+    const [cartItems, setCartItems] = useState([]);
+
 
     useEffect(() => {
         fetchCategories();
@@ -70,8 +73,17 @@ export default function Content() {
         return <div>Loading...</div>;
     }
     const colors = ['#F6784C', '#C4D600', '#EAAA00', '#ED8B00', '#84BD00'];
-    console.log(categories);
-    console.log(products)
+    
+
+    //Ajouter un produit au panier 
+
+    const addToCart = async (product: Product) => {
+        let cart = localStorage.getItem('cart');
+        cart = cart ? JSON.parse(cart) : [];
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        console.log(cart)
+      };
 
     return (
         <div>
@@ -119,7 +131,7 @@ export default function Content() {
                                             <p>{product.description}</p>
                                             <div className={styles.productDetails}>
                                                 <p>{product.price} €</p>
-                                                <button className={styles.addToCartButton}>Ajouter au panier</button>
+                                                <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
                                             </div>
                                         </div>
                                     </div>

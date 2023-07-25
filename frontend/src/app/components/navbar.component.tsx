@@ -33,9 +33,10 @@ export default function Navbar() {
                  <button type="submit" className={styles.submitButton}><FaSearch /></button>
                </form>
 
-                <a className={styles.a} href="#">Home</a>
+                <a className={styles.a} href="/">Home</a>
                 <a className={styles.a} href="#">Explore</a>
                 <a className={styles.a} href="#">Help</a>
+                <a className={styles.a} href="/cart">Mon panier</a>
               </div>
             </nav>
         </div>
