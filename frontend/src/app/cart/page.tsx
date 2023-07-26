@@ -1,17 +1,33 @@
 "use client"
 
-import { useContext, useState } from 'react';
-import { CartContext } from './CartContext';
 import Navbar from '../components/navbar.component';
 import Footer from '../components/footer';
 import Image from 'next/image';
 import styles from './page.module.css'
 import Link from 'next/link'
+import { useEffect, useState } from 'react';
 
 export default function Cart() {
-  const { cartItems, handleDelete } = useContext(CartContext);
+  const [cartItems, setCartItems] = useState([]);
   const [search, setSearch] = useState('');
-  console.log(cartItems)
+
+  useEffect(() => {
+    fetchCartItems();
+  }, []);
+
+  const fetchCartItems = () => {
+    let cart = localStorage.getItem('cart');
+    cart = cart ? JSON.parse(cart) : [];
+    setCartItems(cart);
+  };
+
+  const handleDelete = (id) => {
+    let cart = localStorage.getItem('cart');
+    cart = cart ? JSON.parse(cart) : [];
+    const updatedCart = cart.filter((item) => item.id !== id);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    setCartItems(updatedCart);
+  };
 
 
   return (
