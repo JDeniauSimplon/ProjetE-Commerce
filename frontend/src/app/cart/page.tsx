@@ -9,10 +9,11 @@ import { useEffect, useState } from 'react';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
-  const [search, setSearch] = useState('');
+  const [orders, getOrders] = useState([]);
 
   useEffect(() => {
     fetchCartItems();
+    fetchOrders();
   }, []);
 
   const fetchCartItems = () => {
@@ -20,6 +21,18 @@ export default function Cart() {
     cart = cart ? JSON.parse(cart) : [];
     setCartItems(cart);
   };
+
+  const fetchOrders = async () => {
+    try {
+        const response = await fetch('http://localhost:8000/api/orders');
+        const data = await response.json();
+        getOrders(data["hydra:member"]);
+        getOrders(false);
+    } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        getOrders(false);
+    }
+};
 
   const handleDelete = (id) => {
     let cart = localStorage.getItem('cart');
@@ -62,8 +75,24 @@ export default function Cart() {
             </div>
           ))}
         </div>
-
-        <button className={styles.validate}>Valider mon panier</button>
+        
+        <div className={styles.formContainer}>
+          <form>
+            <label>Nom</label>
+            <input 
+              type="text" 
+            />
+            <label>Prénom</label>
+            <input 
+              type="text" 
+            />
+            <label>Email</label>
+            <input 
+              type="email" 
+            />
+            <button className={styles.validate}>Valider mon panier</button>
+          </form>
+        </div>
       </div>
 
       <Footer />
