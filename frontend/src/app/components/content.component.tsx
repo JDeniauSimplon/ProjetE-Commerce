@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './content.component.module.css'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { Fade, Zoom, AttentionSeeker } from "react-awesome-reveal";
 
 
 interface Product {
@@ -78,7 +79,7 @@ export default function Content({ search }: ContentProps) {
         return <div>Loading...</div>;
     }
     const colors = ['#F6784C', '#C4D600', '#EAAA00', '#ED8B00', '#84BD00'];
-    
+
 
     //Ajouter un produit au panier 
 
@@ -88,7 +89,7 @@ export default function Content({ search }: ContentProps) {
         cart.push(product);
         localStorage.setItem('cart', JSON.stringify(cart));
         console.log(cart)
-      };
+    };
 
     return (
         <div>
@@ -117,33 +118,27 @@ export default function Content({ search }: ContentProps) {
 
 
             <div className={styles.productContainer}>
-                <TransitionGroup component={null}>
+                <Fade cascade damping={0.03}>
                     {filteredProducts.map((product: Product) =>
                         (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
                             (
-                                <CSSTransition
-                                    key={product.id}
-                                    timeout={300}
-                                    classNames="product"
-                                >
 
-                                    <div
-                                        className={`${styles.product}`}
-                                    >
-                                        <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
-                                        <div className={styles.productInfo}>
-                                            <h1>{product.name}</h1>
-                                            <p>{product.description}</p>
-                                            <div className={styles.productDetails}>
-                                                <p>{product.price} €</p>
-                                                <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
-                                            </div>
+                                <div
+                                    className={`${styles.product}`}
+                                >
+                                    <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
+                                    <div className={styles.productInfo}>
+                                        <h1>{product.name}</h1>
+                                        <p>{product.description}</p>
+                                        <div className={styles.productDetails}>
+                                            <p>{product.price} €</p>
+                                            <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
                                         </div>
                                     </div>
-                                </CSSTransition>
+                                </div>
                             ) : null
                     )}
-                </TransitionGroup>
+                </Fade>
             </div>
         </div>
     );
