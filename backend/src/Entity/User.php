@@ -29,16 +29,16 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user_read'])]
+    #[Groups(['user_read', 'order_write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user_read' , 'orders_read'])]
-    private ?string $first_name = null;
+    #[Groups(['user_read', 'orders_read', 'order_write'])]
+    private ?string $first = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user_read'])]
-    private ?string $last_name = null;
+    #[Groups(['user_read', 'order_write'])]
+    private ?string $last = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -59,11 +59,10 @@ class User
     }
 
     public function __toString(): string
-{
-    return $this->first_name . ' ' . $this->last_name;
-    return $this->getOrders();
-}
-    
+    {
+        return $this->first . ' ' . $this->last;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,14 +80,14 @@ class User
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLast(): ?string
     {
-        return $this->last_name;
+        return $this->last;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLast(string $last): static
     {
-        $this->last_name = $last_name;
+        $this->last = $last;
 
         return $this;
     }
@@ -135,14 +134,14 @@ class User
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFirst(): ?string
     {
-        return $this->first_name;
+        return $this->first;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setFirst(string $first): static
     {
-        $this->first_name = $first_name;
+        $this->first = $first;
 
         return $this;
     }

@@ -6,7 +6,7 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud; 
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class UserCrudController extends AbstractCrudController
@@ -31,8 +31,8 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IntegerField::new('id')->hideOnForm()->hideOnIndex(),
-            TextField::new('last_name', 'Nom'),
-            TextField::new('first_name', 'Prénom'),
+            TextField::new('last', 'Nom'),
+            TextField::new('first', 'Prénom'),
             TextField::new('email', 'Email'),
             DateTimeField::new('created_at', 'Date de création')->hideOnForm(),
         ];

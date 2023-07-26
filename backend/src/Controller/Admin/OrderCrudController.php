@@ -31,15 +31,9 @@ class OrderCrudController extends AbstractCrudController
     {
         return [
             IntegerField::new('id')->hideOnForm()->hideOnIndex(),
-            ChoiceField::new('status', 'Statut')->setChoices([
-                'En cours' => 'En cours',
-                'Terminé' => 'Terminé',
-                'Annulé' => 'Annulé',
-            ]),
             AssociationField::new('user', 'Utilisateur'), 
             AssociationField::new('coupons', 'Coupon'), 
             DateTimeField::new('createdAt', 'Date de création')->hideOnForm(),
-            TextField::new('reference', 'Référence')->hideOnForm(),
         ];
     }
     

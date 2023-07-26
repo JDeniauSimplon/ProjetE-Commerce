@@ -27,7 +27,8 @@ use ApiPlatform\Metadata\Patch;
             denormalizationContext: ['groups' => ['order_write']]
         ),
         new Patch(
-            denormalizationContext: ['groups' => ['order_write']])
+            denormalizationContext: ['groups' => ['order_write']]
+        )
     ]
 )]
 #[ORM\Table(name: '`order`')]
@@ -43,29 +44,17 @@ class Order
     #[Groups(['orders_read', 'order_read', 'order_write', 'user_read'])]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(length: 50)]
-    #[Groups(['orders_read', 'order_read', 'order_write'])]
-    private ?string $customer_name = null;
-
-    #[ORM\Column(length: 50)]
-    #[Groups(['orders_read', 'order_read', 'order_write' , 'user_read'])]
-    private ?string $status = null;
-
-    #[ORM\Column(length: 50)]
-    #[Groups(['orders_read', 'order_read', 'order_write' , 'user_read'])]
-    private ?string $reference = null;
-
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['order_write' , 'orders_read', 'order_read', 'user_read'])]
+    #[Groups(['order_write', 'orders_read', 'order_read', 'user_read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(['orders_read', 'order_read', 'order_write', 'promo_read' , 'promos_read' , 'user_read'])]
+    #[Groups(['orders_read', 'order_read', 'order_write', 'promo_read', 'promos_read', 'user_read'])]
     private ?Promo $coupons = null;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'reservation')]
-    #[Groups(['orders_read', 'order_read', 'order_write', 'products_read', 'product_read' , 'user_read'])]
+    #[Groups(['orders_read', 'order_read', 'order_write', 'products_read', 'product_read', 'user_read'])]
     private Collection $products;
 
     public function __construct()
@@ -87,42 +76,6 @@ class Order
     public function setCreatedAt(\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getCustomerName(): ?string
-    {
-        return $this->customer_name;
-    }
-
-    public function setCustomerName(string $customer_name): static
-    {
-        $this->customer_name = $customer_name;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getReference(): ?string
-    {
-        return $this->reference;
-    }
-
-    public function setReference(string $reference): static
-    {
-        $this->reference = $reference;
 
         return $this;
     }

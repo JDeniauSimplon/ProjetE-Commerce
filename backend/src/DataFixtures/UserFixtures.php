@@ -11,32 +11,32 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $user1 = new User();
-        $user1->setFirstName('Emma');
-        $user1->setLastName('Martin');
+        $user1->setFirst('Emma');
+        $user1->setLast('Martin');
         $user1->setEmail('emma.martin@gmail.com');
         $user1->setCreatedAt(new \DateTime());
         
         $user2 = new User();
-        $user2->setFirstName('Lucas');
-        $user2->setLastName('Lefevre');
+        $user2->setFirst('Lucas');
+        $user2->setLast('Lefevre');
         $user2->setEmail('lucas.lefevre@gmail.com');
         $user2->setCreatedAt(new \DateTime());
         
         $user3 = new User();
-        $user3->setFirstName('Chloé');
-        $user3->setLastName('Bernard');
+        $user3->setFirst('Chloé');
+        $user3->setLast('Bernard');
         $user3->setEmail('chloe.bernard@gmail.com');
         $user3->setCreatedAt(new \DateTime());
         
         $user4 = new User();
-        $user4->setFirstName('Gabriel');
-        $user4->setLastName('Robert');
+        $user4->setFirst('Gabriel');
+        $user4->setLast('Robert');
         $user4->setEmail('gabriel.robert@gmail.com');
         $user4->setCreatedAt(new \DateTime());
         
         $user5 = new User();
-        $user5->setFirstName('Léa');
-        $user5->setLastName('Dubois');
+        $user5->setFirst('Léa');
+        $user5->setLast('Dubois');
         $user5->setEmail('lea.dubois@gmail.com');
         $user5->setCreatedAt(new \DateTime());
         
