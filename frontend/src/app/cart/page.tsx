@@ -9,30 +9,21 @@ import { useEffect, useState } from 'react';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
-  const [orders, getOrders] = useState([]);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [coupon, setCoupon] = useState('');
 
   useEffect(() => {
     fetchCartItems();
-    fetchOrders();
   }, []);
 
   const fetchCartItems = () => {
     let cart = localStorage.getItem('cart');
     cart = cart ? JSON.parse(cart) : [];
-    setCartItems(cart);
+    setCartItems(cart); 
   };
 
-  const fetchOrders = async () => {
-    try {
-        const response = await fetch('http://localhost:8000/api/orders');
-        const data = await response.json();
-        getOrders(data["hydra:member"]);
-        getOrders(false);
-    } catch (error) {
-        console.error('Failed to fetch categories:', error);
-        getOrders(false);
-    }
-};
 
   const handleDelete = (id) => {
     let cart = localStorage.getItem('cart');
@@ -42,6 +33,45 @@ export default function Cart() {
     setCartItems(updatedCart);
   };
 
+
+  const addToOrder = async (event) => {
+    let tabProducts = []
+    cartItems.map(item => {
+      let product = "/api/products/" + item.id.toString()
+      tabProducts.push(product)
+    });
+
+    event.preventDefault(); 
+    try {
+      const orderData = {
+        user: {
+          first: name,
+          last: surname,
+          email: email,
+        },
+        products: tabProducts,
+      };
+
+      const response = await fetch('http://localhost:8000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Une erreur est survenue lors de la validation de votre commande. Veuillez réessayer');
+      }
+
+      const order = await response.json();
+      console.log(order)
+      setCartItems([]); 
+      localStorage.clear(); 
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -77,20 +107,42 @@ export default function Cart() {
         </div>
         
         <div className={styles.formContainer}>
-          <form>
+        <form onSubmit={addToOrder}>
             <label>Nom</label>
             <input 
               type="text" 
+              maxLength={20}
+              value={name} 
+              required
+              onChange={(e) => setName(e.target.value)}
             />
             <label>Prénom</label>
             <input 
               type="text" 
+              maxLength={20}
+              value={surname} 
+              required
+              onChange={(e) => setSurname(e.target.value)}
             />
+
             <label>Email</label>
             <input 
               type="email" 
+              maxLength={80}
+              value={email} 
+              required
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <button className={styles.validate}>Valider mon panier</button>
+
+            <label>Coupon</label>
+            <input 
+              type="text" 
+              maxLength={100}
+              placeholder="entrez un code promo"
+              value={coupon}
+              onChange={(e) => setCoupon(e.target.value)}
+            />
+            <button onClick={addToOrder} type="submit" className={styles.validate}>Valider mon panier</button>
           </form>
         </div>
       </div>
