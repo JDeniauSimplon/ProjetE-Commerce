@@ -1,8 +1,9 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './content.component.module.css'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Fade, Zoom, AttentionSeeker } from "react-awesome-reveal";
+import { AppContext } from "../AppContext";
 
 
 interface Product {
@@ -13,6 +14,7 @@ interface Product {
     images: string;
     category: Category;
     price: number;
+    stock: number;
 }
 
 interface Category {
@@ -26,13 +28,45 @@ interface ContentProps {
     search: string;
 }
 
-export default function Content({ search }: ContentProps) {
+export default function Content({ search, id }: ContentProps) {
 
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [checkedCategories, setCheckedCategories] = useState<{ [key: number]: boolean }>({});
     const [cartItems, setCartItems] = useState([]);
+    const id_prod = id;
+    const { toast } = useContext(AppContext);
+    const [dataLocal, setDataLocal] = useState('');
+
+    const [quantity, setQuantity] = useState(() => {
+        const cartData = localStorage.getItem('pannier');
+        if (cartData) {
+          const parsedCartData = JSON.parse(cartData);
+          const filteredData = parsedCartData.filter(item => item.productId === id_prod);
+          if (filteredData.length > 0) {
+            return filteredData[0].quantity;
+          }
+        }
+        return 0; // Valeur par défaut si le produit n'est pas présent dans le localStorage
+      });
+
+      const handleInputChange = (e) => {
+        const inputValue = e.target.value;
+        if (/^\d*$/.test(inputValue)) {
+          setQuantity(inputValue === "" ? 0 : Number(inputValue));
+        }
+      };
+    
+      const increment = () => {
+        setQuantity((prevQuantity) => prevQuantity + 1);
+      };
+    
+      const decrement = () => {
+        if (quantity > 0) {
+          setQuantity((prevQuantity) => prevQuantity - 1);
+        }
+      };
 
 
     useEffect(() => {
@@ -43,6 +77,19 @@ export default function Content({ search }: ContentProps) {
             initialChecks[category.id] = false;
         });
         setCheckedCategories(initialChecks);
+
+        const getCartFromLocalStorage = () => {
+            const cartData = localStorage.getItem('pannier');
+            if (cartData) {
+              const parsedCartData = JSON.parse(cartData);
+              const filteredData = parsedCartData.filter(item => item.productId === id_prod);
+              if (filteredData.length > 0) {
+                setDataLocal(filteredData[0]);
+              }
+            }
+          };
+      
+          getCartFromLocalStorage();
     }, []);
 
     const handleCheckChange = (id: number, isChecked: boolean) => {
@@ -84,12 +131,73 @@ export default function Content({ search }: ContentProps) {
     //Ajouter un produit au panier 
 
     const addToCart = async (product: Product) => {
-        let cart = localStorage.getItem('cart');
+        let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
+        const quantityToAdd = quantity;
+        const productId = product.id;
+        const prix_u = product.price;
+        const name_u = product.name;
+        const desc_u = product.description;
+        const image_u = product.images;
+        const inventory = product.stock;
+
         cart = cart ? JSON.parse(cart) : [];
         cart.push(product);
         localStorage.setItem('cart', JSON.stringify(cart));
         console.log(cart)
+
+        if (quantityToAdd > inventory) {
+            toast.current.show({
+              severity: "error",
+              summary: "Erreur",
+              detail: "Pas assez de stock pour votre commande"
+            })
+            return
+
+        } else if (quantityToAdd === 0) {
+            // Si la quantité à ajouter est égale à 0, supprimer l'item du panier
+            const updatedpannier = cart.filter(item => item.productId !== productId);
+            localStorage.setItem('pannier', JSON.stringify(updatedpannier));
+            toast.current.show({
+              severity: "success",
+              summary: "Supprimé",
+              detail: "Produit supprimmé du pannier"
+            })
+            return;
     };
+
+    const existingItemIndex = cart.findIndex(item => item.productId === productId);
+
+
+    if (existingItemIndex !== -1) {
+        // Si le produit est déjà dans le panier, écraser la quantité avec la nouvelle valeur
+        cart[existingItemIndex].quantity = quantityToAdd;
+        cart[existingItemIndex].price_total = prix_u * quantityToAdd
+        toast.current.show({
+          severity: "success",
+          summary: "Modification",
+          detail: "Quantité modifié dans le pannier"
+        })
+      } else {
+        // Sinon, ajouter le produit au panier avec la quantité spécifiée et son ID
+        cart.push({
+          productId,
+          name: name_u,
+          desc: desc_u,
+          quantity: quantityToAdd,
+          price: prix_u,
+          stock: inventory,
+          image: image_u
+        });
+  
+        toast.current.show({
+          severity: "success",
+          summary: "Ajout",
+          detail: "Produit ajouter au pannier"
+        })
+      }
+  
+      localStorage.setItem('pannier', JSON.stringify(cart));
+    }; 
 
     return (
         <div>
@@ -132,7 +240,15 @@ export default function Content({ search }: ContentProps) {
                                         <p>{product.description}</p>
                                         <div className={styles.productDetails}>
                                             <p>{product.price} €</p>
-                                            <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
+                                        <button className="productCardDecrementBtn" onClick={decrement}>-</button>
+                                        <input
+                                          type="text"
+                                          value={quantity}
+                                          onChange={handleInputChange}
+                                          className="productCardQuantity"
+                                        />
+                                        <button className="productCardIncrementBtn" onClick={increment}>+</button>
+                                           <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
                                         </div>
                                     </div>
                                 </div>
