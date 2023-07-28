@@ -139,10 +139,10 @@
     .product {
         flex: 1 0 100%;
     }
-}
 
-.productContainer {
-    margin-top: 150px;
+    .productContainer {
+        margin-top: 150px;
+    }
 }
 
 .product-enter {
