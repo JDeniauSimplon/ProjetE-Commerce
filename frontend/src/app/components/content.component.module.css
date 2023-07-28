@@ -70,6 +70,39 @@
     /* margin-top: 20px; */
 }
 
+.productDetails .quantitie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+.productDetails .quantitie .productCardDecrementBtn, .productDetails .quantitie .productCardIncrementBtn {
+    background-color: #f8f9fa;
+    border: 1px solid orangered;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.productDetails .quantitie .productCardDecrementBtn:hover,
+.productDetails .quantitie .productCardIncrementBtn:hover {
+    background-color: orangered;
+    color: white;
+}
+
+.productDetails .quantitie .productCardQuantity {
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px;
+    width: 50px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .addToCartButton {
     background-color: #ff7f27;
     border: none;

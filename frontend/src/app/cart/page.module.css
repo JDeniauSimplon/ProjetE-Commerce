@@ -41,11 +41,6 @@
     color: orangered;
 }
 
-.cart .container .products .right .categories {
-    padding-bottom: 15px;
-    font-weight: bold;
-}
-
 .cart .container .products .right .delete {
     background-color: white;
     color: rgb(255, 0, 0);

@@ -234,14 +234,16 @@ export default function Content({ search, id }: ContentProps) {
                     <p>{product.description}</p>
                     <div className={styles.productDetails}>
                       <p>{product.price} €</p>
-                      <button className="productCardDecrementBtn" onClick={() => decrement(product.id)}>-</button>
+                      <div className={styles.quantitie}>
+                      <button className={styles.productCardDecrementBtn} onClick={() => decrement(product.id)}>-</button>
                       <input
                         type="text"
                         value={quantities[product.id] || 0}
                         onChange={(event) => handleInputChange(event, product.id)}
-                        className="productCardQuantity"
+                        className={styles.productCardQuantity}
                       />
-                      <button className="productCardIncrementBtn" onClick={() => increment(product.id)}>+</button>
+                      <button className={styles.productCardIncrementBtn} onClick={() => increment(product.id)}>+</button>
+                      </div>
 
                       <button className={styles.addToCartButton} onClick={() => addToCart(product, quantities[product.id] || 0)}>Ajouter au panier</button>
                     </div>

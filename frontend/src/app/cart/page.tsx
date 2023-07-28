@@ -13,6 +13,7 @@ export default function Cart() {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [coupon, setCoupon] = useState('');
+  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   useEffect(() => {
     fetchCartItems();
@@ -25,10 +26,10 @@ export default function Cart() {
   };
 
 
-  const handleDelete = (id) => {
+  const handleDelete = (productId) => {
     let cart = localStorage.getItem('cart');
     cart = cart ? JSON.parse(cart) : [];
-    const updatedCart = cart.filter((item) => item.id !== id);
+    const updatedCart = cart.filter((item) => item.productId !== productId);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     setCartItems(updatedCart);
   };
@@ -37,7 +38,7 @@ export default function Cart() {
   const addToOrder = async (event) => {
     let tabProducts = []
     cartItems.map(item => {
-      let product = "/api/products/" + item.id.toString()
+      let product = "/api/products/" + item.productId.toString()
       tabProducts.push(product)
     });
 
@@ -95,12 +96,11 @@ export default function Cart() {
 
               <div className={styles.right}>
                 <h3 className={styles.name}>{item.name}</h3>
-                <p className={styles.description}>{item.description}</p>
-                <p className={styles.price}>{item.price} €</p>
-                <p className={styles.categories}>{item?.category?.name}</p>
+                <p className={styles.description}>{item.desc}</p>
+                <p className={styles.price}>{totalPrice.toFixed(2)} €</p>
                 <button
                   className={styles.delete}
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => handleDelete(item.productId)}
                 >
                   Supprimer produit
                 </button>
