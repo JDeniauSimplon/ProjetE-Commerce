@@ -221,12 +221,13 @@ export default function Content({ search, id }: ContentProps) {
 
       <div className={styles.productContainer}>
         <Fade cascade damping={0.03}>
-          {filteredProducts.map((product: Product) =>
+          {filteredProducts.map((product: Product, index) =>
             (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
               (
 
                 <div
                   className={`${styles.product}`}
+                  key={index}
                 >
                   <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
                   <div className={styles.productInfo}>
@@ -235,14 +236,14 @@ export default function Content({ search, id }: ContentProps) {
                     <div className={styles.productDetails}>
                       <p>{product.price} €</p>
                       <div className={styles.quantitie}>
-                      <button className={styles.productCardDecrementBtn} onClick={() => decrement(product.id)}>-</button>
-                      <input
-                        type="text"
-                        value={quantities[product.id] || 0}
-                        onChange={(event) => handleInputChange(event, product.id)}
-                        className={styles.productCardQuantity}
-                      />
-                      <button className={styles.productCardIncrementBtn} onClick={() => increment(product.id)}>+</button>
+                        <button className={styles.productCardDecrementBtn} onClick={() => decrement(product.id)}>-</button>
+                        <input
+                          type="text"
+                          value={quantities[product.id] || 0}
+                          onChange={(event) => handleInputChange(event, product.id)}
+                          className={styles.productCardQuantity}
+                        />
+                        <button className={styles.productCardIncrementBtn} onClick={() => increment(product.id)}>+</button>
                       </div>
 
                       <button className={styles.addToCartButton} onClick={() => addToCart(product, quantities[product.id] || 0)}>Ajouter au panier</button>

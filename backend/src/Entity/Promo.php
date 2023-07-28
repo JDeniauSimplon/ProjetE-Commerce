@@ -28,22 +28,23 @@ class Promo
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['promo_read','promos_read', 'order_read', 'orders_read'])]
+    #[Groups(['promo_read', 'promos_read', 'order_read', 'orders_read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['promo_read', 'promos_read', 'order_read', 'orders_read'])]
     private ?string $code = null;
 
     #[ORM\Column]
-    #[Groups(['promo_read','promos_read', 'order_read', 'orders_read'])]
+    #[Groups(['promo_read', 'promos_read', 'order_read', 'orders_read'])]
     private ?int $discount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Groups(['promo_read','promos_read' ])]
+    #[Groups(['promo_read', 'promos_read'])]
     private ?\DateTimeInterface $end_date = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['promo_read','promos_read', 'order_read', 'orders_read'])]
+    #[Groups(['promo_read', 'promos_read', 'order_read', 'orders_read'])]
     private ?string $campaign = null;
 
     #[ORM\OneToMany(mappedBy: 'coupons', targetEntity: Order::class)]
