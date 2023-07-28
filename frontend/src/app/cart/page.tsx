@@ -21,7 +21,7 @@ export default function Cart() {
   const fetchCartItems = () => {
     let cart = localStorage.getItem('cart');
     cart = cart ? JSON.parse(cart) : [];
-    setCartItems(cart); 
+    setCartItems(cart);
   };
 
 
@@ -41,7 +41,7 @@ export default function Cart() {
       tabProducts.push(product)
     });
 
-    event.preventDefault(); 
+    event.preventDefault();
     try {
       const orderData = {
         user: {
@@ -59,19 +59,22 @@ export default function Cart() {
         },
         body: JSON.stringify(orderData),
       });
-      
+
       if (!response.ok) {
         throw new Error('Une erreur est survenue lors de la validation de votre commande. Veuillez réessayer');
       }
 
       const order = await response.json();
       console.log(order)
-      setCartItems([]); 
-      localStorage.clear(); 
+      setCartItems([]);
+      localStorage.clear();
     } catch (error) {
       console.error(error);
     }
   };
+
+  console.log(cartItems);
+
 
   return (
     <>
@@ -83,7 +86,7 @@ export default function Cart() {
             <div className={styles.products} key={item.id}>
               <div className={styles.left}>
                 <img
-                  src={`http://localhost:8000/uploads/images/${item.images}`}
+                  src={`http://localhost:8000/uploads/images/${item.image}`}
                   alt="Product image"
                   width={200}
                   height={200}
@@ -94,7 +97,7 @@ export default function Cart() {
                 <h3 className={styles.name}>{item.name}</h3>
                 <p className={styles.description}>{item.description}</p>
                 <p className={styles.price}>{item.price} €</p>
-                <p className={styles.categories}>{item.category.name}</p>
+                <p className={styles.categories}>{item?.category?.name}</p>
                 <button
                   className={styles.delete}
                   onClick={() => handleDelete(item.id)}
@@ -105,38 +108,38 @@ export default function Cart() {
             </div>
           ))}
         </div>
-        
+
         <div className={styles.formContainer}>
-        <form onSubmit={addToOrder}>
+          <form onSubmit={addToOrder}>
             <label>Nom</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               maxLength={20}
-              value={name} 
+              value={name}
               required
               onChange={(e) => setName(e.target.value)}
             />
             <label>Prénom</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               maxLength={20}
-              value={surname} 
+              value={surname}
               required
               onChange={(e) => setSurname(e.target.value)}
             />
 
             <label>Email</label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               maxLength={80}
-              value={email} 
+              value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
             />
 
             <label>Coupon</label>
-            <input 
-              type="text" 
+            <input
+              type="text"
               maxLength={100}
               placeholder="entrez un code promo"
               value={coupon}

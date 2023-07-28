@@ -9,7 +9,7 @@ export default function AppContextProvider({ children }) {
 
     const toast = useRef(null)
     const values = {
-        value:"test",
+        value: "test",
         toast,
     }
     return <AppContext.Provider value={values}>{children}</AppContext.Provider>

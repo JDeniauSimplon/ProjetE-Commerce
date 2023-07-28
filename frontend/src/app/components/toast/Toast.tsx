@@ -1,6 +1,6 @@
 'use client'
 
-import { AppContext } from '../../AppContext'
+import { AppContext } from '@/app/AppContext';
 import { Toast as PToast } from 'primereact/toast';
 import { useContext } from 'react';
 

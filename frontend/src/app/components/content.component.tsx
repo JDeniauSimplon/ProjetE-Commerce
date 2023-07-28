@@ -3,259 +3,254 @@ import React, { useState, useEffect, useContext } from 'react';
 import styles from './content.component.module.css'
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Fade, Zoom, AttentionSeeker } from "react-awesome-reveal";
-import { AppContext } from "../AppContext";
+import { AppContext } from '../AppContext';
 
 
 interface Product {
-    id: number;
-    categoryid: number;
-    name: string;
-    description: string;
-    images: string;
-    category: Category;
-    price: number;
-    stock: number;
+  id: number;
+  categoryid: number;
+  name: string;
+  description: string;
+  images: string;
+  category: Category;
+  price: number;
+  stock: number;
 }
 
 interface Category {
-    id: number;
-    name: string;
-    description: string;
-    images: string;
+  id: number;
+  name: string;
+  description: string;
+  images: string;
 }
 
 interface ContentProps {
-    search: string;
+  search: string;
+  id: number;
 }
 
 export default function Content({ search, id }: ContentProps) {
 
-    const [categories, setCategories] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [checkedCategories, setCheckedCategories] = useState<{ [key: number]: boolean }>({});
-    const [cartItems, setCartItems] = useState([]);
-    const id_prod = id;
-    const { toast } = useContext(AppContext);
-    const [dataLocal, setDataLocal] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [checkedCategories, setCheckedCategories] = useState<{ [key: number]: boolean }>({});
+  const [cartItems, setCartItems] = useState([]);
+  const id_prod = id;
+  const { toast } = useContext(AppContext);
+  const [dataLocal, setDataLocal] = useState('');
+  const [quantities, setQuantities] = useState({});
 
-    const [quantity, setQuantity] = useState(() => {
-        const cartData = localStorage.getItem('pannier');
-        if (cartData) {
-          const parsedCartData = JSON.parse(cartData);
-          const filteredData = parsedCartData.filter(item => item.productId === id_prod);
-          if (filteredData.length > 0) {
-            return filteredData[0].quantity;
-          }
+
+  const handleInputChange = (event, productId) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: event.target.value,
+    }));
+  };
+
+
+  const increment = (productId) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: (quantities[productId] || 0) + 1,
+    }));
+  };
+
+  const decrement = (productId) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: Math.max(0, (quantities[productId] || 0) - 1),
+    }));
+  };
+
+
+
+  useEffect(() => {
+    fetchCategories();
+    fetchProducts()
+    let initialChecks: { [key: number]: boolean } = {};
+    categories.forEach((category: Category, index) => {
+      initialChecks[category.id] = false;
+    });
+    setCheckedCategories(initialChecks);
+
+    const getCartFromLocalStorage = () => {
+      const cartData = localStorage.getItem('cart');
+      if (cartData) {
+        const parsedCartData = JSON.parse(cartData);
+        const filteredData = parsedCartData.filter(item => item.productId === id_prod);
+        if (filteredData.length > 0) {
+          setDataLocal(filteredData[0]);
         }
-        return 0; // Valeur par défaut si le produit n'est pas présent dans le localStorage
-      });
-
-      const handleInputChange = (e) => {
-        const inputValue = e.target.value;
-        if (/^\d*$/.test(inputValue)) {
-          setQuantity(inputValue === "" ? 0 : Number(inputValue));
-        }
-      };
-    
-      const increment = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
-      };
-    
-      const decrement = () => {
-        if (quantity > 0) {
-          setQuantity((prevQuantity) => prevQuantity - 1);
-        }
-      };
-
-
-    useEffect(() => {
-        fetchCategories();
-        fetchProducts()
-        let initialChecks: { [key: number]: boolean } = {};
-        categories.forEach((category: Category, index) => {
-            initialChecks[category.id] = false;
-        });
-        setCheckedCategories(initialChecks);
-
-        const getCartFromLocalStorage = () => {
-            const cartData = localStorage.getItem('pannier');
-            if (cartData) {
-              const parsedCartData = JSON.parse(cartData);
-              const filteredData = parsedCartData.filter(item => item.productId === id_prod);
-              if (filteredData.length > 0) {
-                setDataLocal(filteredData[0]);
-              }
-            }
-          };
-      
-          getCartFromLocalStorage();
-    }, []);
-
-    const handleCheckChange = (id: number, isChecked: boolean) => {
-        setCheckedCategories(prevState => ({ ...prevState, [id]: isChecked }));
+      }
     };
 
-    const fetchCategories = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/api/categories');
-            const data = await response.json();
-            setCategories(data["hydra:member"]);
-            setLoading(false);
-        } catch (error) {
-            console.error('Failed to fetch categories:', error);
-            setLoading(false);
-        }
-    };
+    getCartFromLocalStorage();
+  }, []);
 
-    const fetchProducts = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/api/products');
-            const data = await response.json();
-            setProducts(data["hydra:member"]);
-            setLoading(false);
-        } catch (error) {
-            console.error('Failed to fetch categories:', error);
-            setLoading(false);
-        }
-    };
+  const handleCheckChange = (id: number, isChecked: boolean) => {
+    setCheckedCategories(prevState => ({ ...prevState, [id]: isChecked }));
+  };
 
-    const filteredProducts = products.filter((product: Product) => product.name.toLowerCase().includes(search.toLowerCase()));
-
-    if (loading) {
-        return <div>Loading...</div>;
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/categories');
+      const data = await response.json();
+      setCategories(data["hydra:member"]);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      setLoading(false);
     }
-    const colors = ['#F6784C', '#C4D600', '#EAAA00', '#ED8B00', '#84BD00'];
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/products');
+      const data = await response.json();
+      setProducts(data["hydra:member"]);
+      setLoading(false);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      setLoading(false);
+    }
+  };
+
+  const filteredProducts = products.filter((product: Product) => product.name.toLowerCase().includes(search.toLowerCase()));
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  const colors = ['#F6784C', '#C4D600', '#EAAA00', '#ED8B00', '#84BD00'];
 
 
-    //Ajouter un produit au panier 
 
-    const addToCart = async (product: Product) => {
-        let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-        const quantityToAdd = quantity;
-        const productId = product.id;
-        const prix_u = product.price;
-        const name_u = product.name;
-        const desc_u = product.description;
-        const image_u = product.images;
-        const inventory = product.stock;
+  const addToCart = async (product: Product, quantityToAdd: number) => {
+    let cart: CartItem[] = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
 
-        cart = cart ? JSON.parse(cart) : [];
-        cart.push(product);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log(cart)
+    const existingItemIndex = cart.findIndex(item => item.productId === product.id);
 
-        if (quantityToAdd > inventory) {
-            toast.current.show({
-              severity: "error",
-              summary: "Erreur",
-              detail: "Pas assez de stock pour votre commande"
-            })
-            return
-
-        } else if (quantityToAdd === 0) {
-            // Si la quantité à ajouter est égale à 0, supprimer l'item du panier
-            const updatedpannier = cart.filter(item => item.productId !== productId);
-            localStorage.setItem('pannier', JSON.stringify(updatedpannier));
-            toast.current.show({
-              severity: "success",
-              summary: "Supprimé",
-              detail: "Produit supprimmé du pannier"
-            })
-            return;
-    };
-
-    const existingItemIndex = cart.findIndex(item => item.productId === productId);
-
-
-    if (existingItemIndex !== -1) {
-        // Si le produit est déjà dans le panier, écraser la quantité avec la nouvelle valeur
-        cart[existingItemIndex].quantity = quantityToAdd;
-        cart[existingItemIndex].price_total = prix_u * quantityToAdd
+    if (quantityToAdd === 0 && existingItemIndex !== -1) {
+      // Si la quantité à ajouter est égale à 0, supprimer l'item du panier
+      cart = cart.filter(item => item.productId !== product.id);
+      toast.current.show({
+        severity: "success",
+        summary: "Supprimé",
+        detail: "Produit supprimé du panier"
+      });
+    } else if (existingItemIndex !== -1) {
+      // Si le produit est déjà dans le panier, ajouter à la quantité existante
+      const updatedQuantity = cart[existingItemIndex].quantity + quantityToAdd;
+      if (updatedQuantity > product.stock) {
+        toast.current.show({
+          severity: "error",
+          summary: "Erreur",
+          detail: "Pas assez de stock pour votre commande"
+        });
+      } else {
+        cart[existingItemIndex].quantity = updatedQuantity;
+        cart[existingItemIndex].price = product.price * updatedQuantity;
         toast.current.show({
           severity: "success",
           summary: "Modification",
-          detail: "Quantité modifié dans le pannier"
-        })
-      } else {
-        // Sinon, ajouter le produit au panier avec la quantité spécifiée et son ID
-        cart.push({
-          productId,
-          name: name_u,
-          desc: desc_u,
-          quantity: quantityToAdd,
-          price: prix_u,
-          stock: inventory,
-          image: image_u
+          detail: "Quantité modifiée dans le panier"
         });
-  
-        toast.current.show({
-          severity: "success",
-          summary: "Ajout",
-          detail: "Produit ajouter au pannier"
-        })
       }
-  
-      localStorage.setItem('pannier', JSON.stringify(cart));
-    }; 
+    } else if (quantityToAdd <= product.stock) {
+      // Si le produit n'est pas dans le panier, et qu'il y a assez de stock, l'ajouter au panier
+      cart.push({
+        productId: product.id,
+        name: product.name,
+        desc: product.description,
+        quantity: quantityToAdd,
+        price: product.price * quantityToAdd,
+        stock: product.stock,
+        image: product.images
+      });
+      toast.current.show({
+        severity: "success",
+        summary: "Ajout",
+        detail: "Produit ajouté au panier"
+      });
+    } else {
+      toast.current.show({
+        severity: "error",
+        summary: "Erreur",
+        detail: "Pas assez de stock pour votre commande"
+      });
+    }
 
-    return (
-        <div>
-            <div className={styles.categories}>
-
-                {categories?.map((category: Category, index) => (
-                    <label
-                        key={index}
-                        className={`${styles.categoryButton} ${checkedCategories[category.id] ? styles.checked : ''}`}
-                        style={{
-                            backgroundColor: checkedCategories[category.id] ? `${colors[index % colors.length]}CC` : colors[index % colors.length],
-                        }}
-                        htmlFor={category.id.toString()}
-                    >
-                        <input
-                            type="checkbox"
-                            id={category.id.toString()}
-                            checked={checkedCategories[category.id] || false}
-                            onChange={(e) => handleCheckChange(category.id, e.target.checked)}
-                            style={{ display: 'none' }}
-                        />
-                        {category.name}
-                    </label>
-                ))}
-            </div>
+    localStorage.setItem('cart', JSON.stringify(cart));
 
 
-            <div className={styles.productContainer}>
-                <Fade cascade damping={0.03}>
-                    {filteredProducts.map((product: Product) =>
-                        (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
-                            (
+    // console.log(quantityToAdd)
+    // console.log(product.stock)
 
-                                <div
-                                    className={`${styles.product}`}
-                                >
-                                    <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
-                                    <div className={styles.productInfo}>
-                                        <h1>{product.name}</h1>
-                                        <p>{product.description}</p>
-                                        <div className={styles.productDetails}>
-                                            <p>{product.price} €</p>
-                                        <button className="productCardDecrementBtn" onClick={decrement}>-</button>
-                                        <input
-                                          type="text"
-                                          value={quantity}
-                                          onChange={handleInputChange}
-                                          className="productCardQuantity"
-                                        />
-                                        <button className="productCardIncrementBtn" onClick={increment}>+</button>
-                                           <button className={styles.addToCartButton} onClick={() => addToCart(product)}>Ajouter au panier</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : null
-                    )}
-                </Fade>
-            </div>
-        </div>
-    );
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [product.id]: 0,
+    }));
+  };
+
+  return (
+    <div>
+      <div className={styles.categories}>
+
+        {categories?.map((category: Category, index) => (
+          <label
+            key={index}
+            className={`${styles.categoryButton} ${checkedCategories[category.id] ? styles.checked : ''}`}
+            style={{
+              backgroundColor: checkedCategories[category.id] ? `${colors[index % colors.length]}CC` : colors[index % colors.length],
+            }}
+            htmlFor={category.id.toString()}
+          >
+            <input
+              type="checkbox"
+              id={category.id.toString()}
+              checked={checkedCategories[category.id] || false}
+              onChange={(e) => handleCheckChange(category.id, e.target.checked)}
+              style={{ display: 'none' }}
+            />
+            {category.name}
+          </label>
+        ))}
+      </div>
+
+
+      <div className={styles.productContainer}>
+        <Fade cascade damping={0.03}>
+          {filteredProducts.map((product: Product) =>
+            (!Object.values(checkedCategories).includes(true) || checkedCategories[product.category.id]) ?
+              (
+
+                <div
+                  className={`${styles.product}`}
+                >
+                  <img src={`http://localhost:8000/uploads/images/${product.images}`} alt="Product image" />
+                  <div className={styles.productInfo}>
+                    <h1>{product.name}</h1>
+                    <p>{product.description}</p>
+                    <div className={styles.productDetails}>
+                      <p>{product.price} €</p>
+                      <button className="productCardDecrementBtn" onClick={() => decrement(product.id)}>-</button>
+                      <input
+                        type="text"
+                        value={quantities[product.id] || 0}
+                        onChange={(event) => handleInputChange(event, product.id)}
+                        className="productCardQuantity"
+                      />
+                      <button className="productCardIncrementBtn" onClick={() => increment(product.id)}>+</button>
+
+                      <button className={styles.addToCartButton} onClick={() => addToCart(product, quantities[product.id] || 0)}>Ajouter au panier</button>
+                    </div>
+                  </div>
+                </div>
+              ) : null
+          )}
+        </Fade>
+      </div>
+    </div>
+  );
 }
