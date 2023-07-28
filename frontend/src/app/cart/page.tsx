@@ -141,7 +141,7 @@ export default function Cart() {
       <Navbar />
       <div className={styles.cart}>
         <h1 className={styles.title}>Mon panier</h1>
-        {isOrderValidated && <p>Votre commande a été validée avec succès !</p>} 
+        {isOrderValidated && <p>Votre commande a été validée avec succès !</p>}
         <div className={styles.container}>
           {cartItems.map((item, index) => (
             <div className={styles.products} key={index}>
@@ -159,6 +159,7 @@ export default function Cart() {
                 <p className={styles.description}>{item.desc}</p>
                 <p className={styles.price}>{item.price.toFixed(2)} €</p>
                 <p>Quantity: {item.quantity}</p>
+                <p>Total Price: {(item.quantity * item.price).toFixed(2)}</p>
                 <input
                   type="number"
                   min="1"
