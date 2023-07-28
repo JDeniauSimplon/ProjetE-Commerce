@@ -1,5 +1,6 @@
 .categories {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     height: 100px;
@@ -138,6 +139,10 @@
     .product {
         flex: 1 0 100%;
     }
+}
+
+.productContainer {
+    margin-top: 150px;
 }
 
 .product-enter {

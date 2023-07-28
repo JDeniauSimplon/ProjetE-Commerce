@@ -24,6 +24,8 @@
 }
 
 .cart .container .products .right {
+    display: flex;
+    flex-direction: column;
     padding-top: 15px;
     padding-left: 20px;
 }
@@ -42,13 +44,14 @@
 }
 
 .cart .container .products .right .delete {
+    align-self: flex-start;
     background-color: white;
     color: rgb(255, 0, 0);
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     border: none;
-    
+    padding-top: 15px;
 }
 
 .cart .formContainer {
