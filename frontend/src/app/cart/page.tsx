@@ -13,6 +13,7 @@ export default function Cart() {
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [coupon, setCoupon] = useState('');
+  const [isOrderValidated, setIsOrderValidated] = useState(false); // new state
   const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
 
   useEffect(() => {
@@ -69,6 +70,7 @@ export default function Cart() {
       console.log(order)
       setCartItems([]);
       localStorage.clear();
+      setIsOrderValidated(true); // order validated successfully
     } catch (error) {
       console.error(error);
     }
@@ -82,6 +84,7 @@ export default function Cart() {
       <Navbar />
       <div className={styles.cart}>
         <h1 className={styles.title}>Mon panier</h1>
+        {isOrderValidated && <p>Votre commande a été validée avec succès !</p>} 
         <div className={styles.container}>
           {cartItems.map((item) => (
             <div className={styles.products} key={item.id}>
