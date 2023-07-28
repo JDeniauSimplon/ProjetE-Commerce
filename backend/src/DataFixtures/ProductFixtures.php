@@ -237,6 +237,15 @@ class ProductFixtures extends Fixture
         $product25->setCategory($this->getReference('Produits Frais'));
         $product25->setCreatedAt(new \DateTime('2023-07-20'));
 
+        $product26 = new Product();
+        $product26->setName('Tarte au concombre');
+        $product26->setDescription('Vous avez vu, c\'est pas bon hein !');
+        $product26->setImages('362146d23b18876ee6a59ea41b564f514ec3170e.jpg');
+        $product26->setStock(150);
+        $product26->setPrice('666.00');
+        $product26->setCategory($this->getReference('Épicerie Salée'));
+        $product26->setCreatedAt(new \DateTime('2023-07-20'));
+
         $manager->persist($product1);
         $manager->persist($product2);
         $manager->persist($product3);
@@ -262,6 +271,7 @@ class ProductFixtures extends Fixture
         $manager->persist($product23);
         $manager->persist($product24);
         $manager->persist($product25);
+        $manager->persist($product26);
 
         $manager->flush();
     }
